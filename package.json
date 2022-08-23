@@ -1,0 +1,25 @@
+{
+  "name": "cubicle",
+  "version": "1.0.0",
+  "description": "JS Backend project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tihomirtx88/Cubicle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tihomirtx88/Cubicle/issues"
+  },
+  "homepage": "https://github.com/tihomirtx88/Cubicle#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

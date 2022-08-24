@@ -22,5 +22,12 @@
         "name": "Megaminx",
         "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61HpQqVQ37L._SY355_.jpg",
         "difficultyLevel": 3
+    },
+    {
+        "id": 4,
+        "name": "dsfafdsfsa",
+        "description": "dsfasdfafds",
+        "imageUrl": "https://jalopytalk.com/wp-content/uploads/2022/03/yellow-smart-car-03142022-min.jpg",
+        "difficultyLevel": "3"
     }
 ]

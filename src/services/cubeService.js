@@ -1,10 +1,13 @@
 const fs = require(`fs/promises`);
 const path = require(`path`);
+
 const Accessory = require("../models/Accessory");
 
 const Cube = require(`../models/Cube`);
 
-exports.getOne = (cubeId) => Cube.findById(cubeId);
+exports.getOne = (cubeId) => Cube.findById(cubeId).populate(`accessories`);
+                      //Take also the accessories from model
+
 
 exports.create = (cube) => Cube.create(cube);
 

@@ -1,20 +1,21 @@
 const router = require(`express`).Router();
 const cubeSeervices = require(`../services/cubeService`);
 const accessoryService = require(`../services/accessoryService`);
+const { isAuth } = require("../Middlewares/authMiddleware");
 
-router.get(`/create`, (req,res)=> {
+router.get(`/create`, isAuth, (req,res)=> {
     res.render(`create`);
 });
 
-router.post(`/create`, (req,res) => {
+router.post(`/create`, isAuth, (req,res) => {
     const cube = req.body;
+    cube.owner = req.user._id;
     //Validate
     if (cube.name.length < 2) {
        return res.status(400).send(`Invalid requiest`)
     }
 
     //Save data
-    
     cubeSeervices.create(cube)
           .then(()=>{
                //Redirect to page
@@ -44,6 +45,34 @@ router.post(`/:cubeId/attach-accessory`, async(req, res) => {
     await cubeSeervices.attachAccessory(req.params.cubeId, accessoryId);
 
     res.redirect(`/cube/details/${req.params.cubeId}`);
+});
+
+router.get(`/:cubeId/edit`,isAuth, async(req,res) => {
+     const cube = await cubeSeervices.getOne(req.params.cubeId).lean();
+
+     if (cube.owner != req.user._id) {
+        return res.redirect(`/404`);
+     }
+
+     cube[`difficultyLevel${cube.difficultyLevel}`] = true;
+     //For the select option 
+
+     if (!cube) {
+        return res.redirect(`/404`);
+     }
+
+     res.render(`cube/edit`, { cube });
+});
+
+router.post(`/:cubeId/edit`, async(req,res) => {
+    
+   let modifiedCube = await cubeSeervices.edit(req.params.cubeId, req.body);
+
+   if (!modifiedCube) {
+       return res.redirect(`/404`);
+   }
+    
+    res.redirect(`/cube/details/${modifiedCube._id}`);
 });
 
 module.exports = router;

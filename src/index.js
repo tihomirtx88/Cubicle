@@ -3,14 +3,14 @@ const cookieParser = require(`cookie-parser`);
 
 const routes = require(`./routes`);
 const {initiallizeDatabase} = require(`./config/database`);
-
+const {auth} = require(`./Middlewares/authMiddleware`);
 const app = express();
 require(`./config/handlebars`)(app);
 
 app.use(`/static`, express.static(`src/public`));
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
-
+app.use(auth);
 app.use(routes);
 
 initiallizeDatabase()

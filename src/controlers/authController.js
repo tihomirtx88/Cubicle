@@ -30,6 +30,8 @@ router.post(`/register`, async(req, res) => {
       return res.redirect(`/404`);
    }
 
+   res.cookie(`user-sesiton`, token);
+
    res.redirect(`/`);
  });
 

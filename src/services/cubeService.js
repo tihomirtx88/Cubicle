@@ -8,12 +8,12 @@ const Cube = require(`../models/Cube`);
 exports.getOne = (cubeId) => Cube.findById(cubeId);
 
 exports.getOneDetails = (cubeId) => Cube.findById(cubeId).populate(`accessories`);
-                      //Take also the accessories from model
+//Take also the accessories from model
 
 
 exports.create = (cube) => Cube.create(cube);
 
-exports.attachAccessory = async(cubeId, accessoryId) => {
+exports.attachAccessory = async (cubeId, accessoryId) => {
   const cube = await Cube.findById(cubeId);
   const accessory = await Accessory.findById(accessoryId);
 
@@ -27,13 +27,14 @@ exports.attachAccessory = async(cubeId, accessoryId) => {
 }
 //Relations bettwen accessories and cubes
 
-exports.getAll = async(search = ``, fromInput, toInput) => {
-    let cubes = await Cube.find().lean();
-    return cubes;
-    // const from = Number(fromInput) || 0;
-    // const to = Number(toInput) || 6;
+exports.getAll = async (search = ``, fromInput, toInput) => {
+     const from = Number(fromInput) || 0;
+     const to = Number(toInput) || 6;
 
-    //  const result = cubes.
-    //       filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
-    //       .filter(c => c.difficultyLevel >= from && c.difficultyLevel <= to);
+     let cubes = await Cube.find({name: {$regex: new RegExp(search, `i`)}})
+         .where(`difficultyLevel`)
+         .lte(to).gte(from)
+         .lean();
+      
+     return cubes;
 };

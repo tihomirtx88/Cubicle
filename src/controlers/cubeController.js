@@ -1,4 +1,5 @@
 const router = require(`express`).Router();
+const {body,check, validationResult} = require(`express-validator`);
 const cubeSeervices = require(`../services/cubeService`);
 const accessoryService = require(`../services/accessoryService`);
 const { isAuth } = require("../Middlewares/authMiddleware");
@@ -7,10 +8,19 @@ router.get(`/create`, isAuth, (req,res)=> {
     res.render(`create`);
 });
 
-router.post(`/create`, isAuth, (req,res) => {
+router.post(`/create`,
+   isAuth, 
+   body([`name`, `Name is required`]).not().isEmpty(),
+   body(`description`).isLength({min: 5, max: 120}),
+  (req,res) => {
+                               //Express-validator
     const cube = req.body;
+
     cube.owner = req.user._id;
     //Validate
+
+    const errors = validationResult(req);
+
     if (cube.name.length < 2) {
        return res.status(400).send(`Invalid requiest`)
     }

@@ -10,8 +10,10 @@ router.get(`/create`, isAuth, (req,res)=> {
 
 router.post(`/create`,
    isAuth, 
-   body([`name`, `Name is required`]).not().isEmpty(),
+   body(`name`, `Name is required`).not().isEmpty(),
    body(`description`).isLength({min: 5, max: 120}),
+   body(`difficultyLevel`,`DifficultyLevel is required to be in range 1 to 6`).toInt().isInt({min: 1, max: 6}),
+                          //Sanitizered
   (req,res) => {
                                //Express-validator
     const cube = req.body;
@@ -21,8 +23,8 @@ router.post(`/create`,
 
     const errors = validationResult(req);
 
-    if (cube.name.length < 2) {
-       return res.status(400).send(`Invalid requiest`)
+    if (!errors.isEmpty()) {
+        return res.status(400).send(errors.array()[0].msg)
     }
 
     //Save data

@@ -12,8 +12,12 @@ router.get(`/register`, (req, res) => {
 router.post(`/register`, async (req, res, next) => {
    if (!validator.isEmail(req.body.username)) {
       // return res.status(404).send(`Invalid email`);
-      let errror = {message: `Invalid email`};
-      next(errror);
+      let error = {
+         message: `Invalid email`,
+         status: 401
+      };
+      
+      return next(error);
    }
    //Validate with validator
    try {

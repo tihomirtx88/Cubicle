@@ -3,7 +3,9 @@ const mongoose = require(`mongoose`);
 const accessorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        validate: /[a-zA-Z0-9 ]/,
+        minLength: 5,
     },
     imageUrl: {
         type: String,

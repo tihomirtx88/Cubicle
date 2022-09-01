@@ -1,3 +1,4 @@
 exports.errorHander = (err, req, res, next)=>{
-    res.status(404).render(`404`, {error: err.message});
+    const status = err.status || 404
+    res.status(status).render(`404`, {error: err.message});
 }

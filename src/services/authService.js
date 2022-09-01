@@ -5,7 +5,7 @@ const {saltRounds,secret} = require(`../config/AppConstant`);
 
 exports.register = async ({ username, password, repeatPassword }) => {
     if (password !== repeatPassword) {
-        return false;
+        throw new Error(`Password must be match`);
     }
     let hashedPassowrd = await bcrypt.hash(password, saltRounds);
 

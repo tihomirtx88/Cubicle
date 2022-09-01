@@ -9,19 +9,21 @@ router.get(`/register`, (req, res) => {
    res.render(`auth/register`);
 });
 
-router.post(`/register`, async (req, res) => {
+router.post(`/register`, async (req, res, next) => {
    if (!validator.isEmail(req.body.username)) {
-      return res.status(404).send(`Invalid email`);
+      // return res.status(404).send(`Invalid email`);
+      let errror = {message: `Invalid email`};
+      next(errror);
    }
    //Validate with validator
-
-   let createdUser = await authService.register(req.body);
-
-   if (createdUser) {
+   try {
+      
+      await authService.register(req.body);
       res.redirect(`/auth/login`);
-   } else {
-      // res.redirect(``);
-      res.redirect(`404`);
+
+   } catch (error) {
+      
+     res.status(401).render(`auth/login`, {error: error.message});
    }
 
 });

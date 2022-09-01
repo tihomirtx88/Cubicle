@@ -4,6 +4,7 @@ const cookieParser = require(`cookie-parser`);
 const routes = require(`./routes`);
 const {initiallizeDatabase} = require(`./config/database`);
 const {auth} = require(`./Middlewares/authMiddleware`);
+const {errorHander} = require(`./Middlewares/errorHandlerMiddleware`);
 const app = express();
 require(`./config/handlebars`)(app);
 
@@ -12,6 +13,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(auth);
 app.use(routes);
+app.use(errorHander);
 
 initiallizeDatabase()
     .then(()=>{
